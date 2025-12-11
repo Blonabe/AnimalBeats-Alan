@@ -1,0 +1,129 @@
+:root {
+    --blanco: #FDF7FA;
+    --rojo: #DF2935;
+    --negro: #07090F;
+    --gris: #E6E8E6;
+    --verde: #4CAF50;
+}
+
+/* Contenedor principal centrado */
+.register-container {
+    min-height: 80vh;
+    /* o 100vh para ocupar toda la altura visible */
+    display: flex;
+    justify-content: center;
+    /* centra horizontalmente */
+    align-items: center;
+    /* centra verticalmente */
+    background-color: var(--blanco);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 15px;
+}
+
+/* Card del formulario */
+.register-card {
+    background-color: var(--gris);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(7, 9, 15, 0.1);
+    padding: 40px 30px;
+    max-width: 600px;
+    min-width: 320px;
+    width: 90%;
+    color: var(--negro);
+}
+
+/* Título centrado */
+.register-card h3 {
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--negro);
+    text-align: center;
+}
+
+/* Labels */
+.form-label {
+    font-weight: 600;
+    color: var(--negro);
+    margin-bottom: 8px;
+    display: block;
+    font-size: 1em;
+}
+
+/* Inputs y selects */
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--gris);
+    border-radius: 10px;
+    font-size: 16px;
+    color: var(--negro);
+    transition: border-color 0.3s ease;
+    margin-bottom: 15px;
+    background-color: white;
+}
+
+.form-control::placeholder {
+    color: var(--gris);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--rojo);
+    box-shadow: 0 0 8px var(--rojo);
+}
+
+/* Select específico para remover apariencias predeterminadas */
+.form-control.select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* Botón */
+.btn-register {
+    background-color: var(--rojo);
+    border: none;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    color: var(--blanco);
+    text-align: center;
+}
+
+.btn-register:hover,
+.btn-register:focus {
+    background-color: #b22228;
+    /* rojo oscuro */
+    transform: scale(1.05);
+    outline: none;
+}
+
+.btn-register:active {
+    background-color: var(--verde);
+}
+
+/* Mensaje de alerta */
+.text-danger {
+    font-size: 0.9em;
+    color: var(--negro);
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .register-card {
+        padding: 30px 20px;
+    }
+
+    .btn-register {
+        font-size: 16px;
+        padding: 10px;
+    }
+}
