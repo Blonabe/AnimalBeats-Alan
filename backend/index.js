@@ -29,7 +29,7 @@ let conexion;
     conexion = await mysql.createPool({
       host: process.env.DB_HOST || "localhost",
       user: process.env.DB_USER || "Alan",
-      password: process.env.DB_PASS || 'Alan0921!',
+      password: process.env.DB_PASS || '0921',
       database: process.env.DB_NAME || "AnimalBeats",
       port: process.env.DB_PORT || 3306,
       waitForConnections: true,
@@ -372,10 +372,10 @@ app.get('/cliente/dashboard/:n_documento', async (req, res) => {
 
     //Obtener citas pendientes (fecha despues de hoy)
     const [citasPendientes] = await conexion.execute(
-      `SELECT c.id_Mascota, m.nombre AS nombre_mascota, s.servicio, c.fecha, c.Descripcion
+      `SELECT c.id_mascota, m.nombre AS nombre_mascota, s.servicio, c.fecha, c.descripcion
        FROM Citas c
-       INNER JOIN Mascota m ON c.id_Mascota = m.id
-       INNER JOIN Servicios s ON c.id_Servicio = s.id
+       INNER JOIN Mascota m ON c.id_mascota = m.id
+       INNER JOIN Servicios s ON c.id_servicio = s.id
        WHERE c.id_cliente = ? AND c.fecha >= CURDATE()
        ORDER BY c.fecha ASC`,
       [n_documento]
@@ -383,10 +383,10 @@ app.get('/cliente/dashboard/:n_documento', async (req, res) => {
 
     // Obtener mascotas registradas
     const [mascotas] = await conexion.execute(
-      `SELECT m.id, m.nombre, e.Especie, r.Raza, m.fecha_nacimiento, m.estado
+      `SELECT m.id, m.nombre, e.especie, r.raza, m.fecha_nacimiento, m.estado
        FROM Mascota m
-       INNER JOIN Especie e ON m.id_Especie = e.id
-       INNER JOIN Raza r ON m.id_Raza = r.id
+       INNER JOIN Especie e ON m.id_especie = e.id
+       INNER JOIN Raza r ON m.id_raza = r.id
        WHERE m.id_cliente = ?`,
       [n_documento]
     );
