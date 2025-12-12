@@ -1,172 +1,165 @@
-import { useEffect, useState, useContext } from "react";
-import Swal from 'sweetalert2';
-import axios from 'axios';
-import OffcanvasMenu from './menu';
-import { Link, useParams } from 'react-router-dom';
-import '../css/gestionRazas.css';
-import { UserContext } from "../context/UserContext";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
+import '../css/ModificarEspecieRaza.css';
 
-const GestionRazas = () => {
-  const { id } = useParams();
-  const [razas, setRazas] = useState([]);
+const ModificarRaza = () => {
+  const { id_especie, id_raza } = useParams();
+  const navigate = useNavigate();
+
+  const [nombreRaza, setNombreRaza] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [imagenActual, setImagenActual] = useState(null);
+  const [imagen, setImagen] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [busqueda, setBusqueda] = useState('');
-  const { User } = useContext(UserContext);
 
   useEffect(() => {
-    const obtenerRazas = async () => {
+    const fetchRaza = async () => {
       try {
-        const respuesta = await axios.get(`/Razas/Listado/${id}`);
-        const datos = respuesta.data;
+        const response = await axios.get(`/razas/${id_raza}`);
+        const raza = response.data;
 
-        if (typeof datos === 'string') {
-          setRazas([]);
-          setError(datos);
-        } else if (Array.isArray(datos)) {
-          // Normalización asegurando compatibilidad
-          const datosNormalizados = datos.map(item => ({
-            ...item,
-            raza: item.raza,
-            descripcion: item.descripcion,
-            imagen: item.imagen,
-            id: item.id,
-            id_especie: item.id_especie,
-          }));
-          setRazas(datosNormalizados);
-          setError(null);
-        } else {
-          setRazas([]);
-          setError('No hay razas registradas');
-        }
-      } catch (error) {
-        setError('Error al conectar con el servidor');
-        console.error(error);
+        setNombreRaza(raza.raza || "");
+        setDescripcion(raza.descripcion || "");
+        setImagenActual(raza.imagen || null); // Aquí asumimos que el backend envía la propiedad imagen
+      } catch (err) {
+        setError("Error al cargar los datos de la raza");
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
-    obtenerRazas();
-  }, [id]);
 
-  const eliminarRaza = async (idRaza) => {
-    const result = await Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Esta raza será eliminada permanentemente.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    });
+    fetchRaza();
+  }, [id_raza]);
 
-    if (result.isConfirmed) {
-      try {
-        const respuesta = await axios.delete(`/Razas/Eliminar/${idRaza}`);
-        const datos = respuesta.data;
-
-        if (datos.mensaje && datos.mensaje.toLowerCase().includes('error')) {
-          Swal.fire('Error al eliminar la raza', datos.mensaje, 'error');
-        } else {
-          setRazas(prev => prev.filter(raza => raza.id !== idRaza));
-          Swal.fire('¡Eliminada!', 'La raza ha sido eliminada con éxito.', 'success');
-        }
-      } catch (error) {
-        console.error(error);
-        Swal.fire("Error", "No se pudo eliminar la raza.", "error");
-      }
+  const handleImagenChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImagen(e.target.files[0]);
+    } else {
+      setImagen(null);
     }
   };
 
-  const razasFiltradas = Array.isArray(razas)
-    ? razas.filter(raza =>
-        raza.raza &&
-        typeof raza.raza === 'string' &&
-        raza.raza.toLowerCase().startsWith(busqueda.toLowerCase())
-      )
-    : [];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append("raza", nombreRaza);
+      formData.append("descripcion", descripcion);
+      if (imagen) {
+        formData.append("imagen", imagen);
+      }
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      await axios.put(`/Razas/Actualizar/${id_raza}`, formData, config);
+      Swal.fire({
+        icon: "success",
+        title: "Raza actualizada",
+        text: "Los datos de la raza se actualizaron correctamente",
+      });
+
+      navigate(`/razas/${id_especie}`);
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo actualizar la raza",
+      });
+    }
+  };
+
+  if (loading) return <p className="raza-loading">Cargando datos...</p>;
+  if (error) return <p className="raza-error">{error}</p>;
 
   return (
-    <div className="gestion-razas-container">
-      <nav className="gestion-especies-menu-lateral">
-        <OffcanvasMenu />
-      </nav>
-      <div className="gestion-razas-dashboard">
-        <main className="gestion-razas-consulta">
-          <nav className="gestion-razas-navbar bg-body-tertiary">
-            <span className="gestion-razas-navbar-brand">Búsqueda</span>
-            <form className="gestion-razas-form d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
+    <div className="raza-contenedor-dashboard">
+      <main className="raza-contenido-principal">
+        <h1 className="raza-titulo">Modificar Raza</h1>
+        <div className="raza-contenedor-formulario">
+          <form className="raza-form-mascota" onSubmit={handleSubmit} encType="multipart/form-data">
+            
+            <div className="raza-mb-3">
+              <label htmlFor="Raza" className="raza-form-label">
+                Nombre de la Raza
+              </label>
               <input
-                className="gestion-razas-input form-control me-2"
-                type="search"
-                placeholder="Buscar Raza"
-                aria-label="Search"
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
+                type="text"
+                id="Raza"
+                name="Raza"
+                className="raza-form-control"
+                value={nombreRaza}
+                onChange={(e) => setNombreRaza(e.target.value)}
+                required
               />
-              <button className="gestion-razas-boton btn btn-primary" type="submit">
-                Buscar
-              </button>
-            </form>
-          </nav>
+            </div>
 
-          <div className="gestion-razas-row row">
-            {razasFiltradas && razasFiltradas.length > 0 ? (
-              razasFiltradas.map((raza) => (
-                <div className="gestion-razas-card card mb-3" style={{ maxWidth: '540px' }} key={raza.id}>
-                  <div className="row g-0">
-                    <div className="col-md-4">
-                      <img
-                        src={raza.imagen}
-                        className="img-fluid rounded-start"
-                        alt={raza.raza}
-                      />
-                    </div>
-                    <div className="col-md-8">
-                      <div className="gestion-razas-card-body card-body">
-                        <h1 className="gestion-razas-card-title card-title">{raza.raza}</h1>
-                        <p className="gestion-razas-card-text card-text">Descripción: {raza.descripcion}</p>
+            <div className="raza-mb-3">
+              <label htmlFor="descripcion" className="raza-form-label">
+                Descripción
+              </label>
+              <textarea
+                id="descripcion"
+                name="descripcion"
+                className="raza-form-control"
+                value={descripcion}
+                onChange={(e) => setDescripcion(e.target.value)}
+                placeholder="Descripción de la raza"
+              />
+            </div>
 
-                        {User.rol !== 2 && (
-                          <>
-                            <Link to={`/Razas/modificar/${id}/${raza.id}`} className="btn btn-primary">
-                              Modificar
-                            </Link>
-                            <button
-                              onClick={() => eliminarRaza(raza.id)}
-                              className="btn btn-danger ms-2 gestion-razas-btn-eliminar"
-                            >
-                              Eliminar
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+            <div className="raza-mb-3">
+              <label className="raza-form-label">Imagen actual</label>
+              {imagenActual ? (
+                <div>
+                  <img
+                    src={`/imagenes_razas/${imagenActual}`}
+                    alt={nombreRaza}
+                    style={{ maxWidth: '200px', display: 'block', marginBottom: '10px' }}
+                  />
                 </div>
-              ))
-            ) : (
-              <p className="gestion-razas-sin-resultados">{error || 'No hay razas registradas.'}</p>
-            )}
-          </div>
-        </main>
-
-        <div className="gestion-razas-crear">
-          {id ? (
-            <>
-              <Link to="/Especies" className="btn btn-secondary me-2">
-                Regresar
-              </Link>
-
-              {User.rol !== 2 && (
-                <Link to={`/Razas/crear/${id}`} className="btn btn-primary">
-                  Crear raza
-                </Link>
+              ) : (
+                <p>No hay imagen disponible</p>
               )}
-            </>
-          ) : (
-            <p>Cargando...</p>
-          )}
+            </div>
+
+            <div className="raza-mb-3">
+              <label htmlFor="imagen" className="raza-form-label">
+                Cambiar imagen (opcional)
+              </label>
+              <input
+                type="file"
+                id="imagen"
+                name="imagen"
+                className="raza-form-control"
+                accept="image/*"
+                onChange={handleImagenChange}
+              />
+            </div>
+
+            <div className="raza-mb-3">
+              <button type="submit" className="raza-btn-primary">
+                Modificar Raza
+              </button>
+            </div>
+
+            <Link to={`/razas/${id_especie}`} className="raza-btn-link">
+              Volver
+            </Link>
+          </form>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
 
-export default GestionRazas;
+export default ModificarRaza;
