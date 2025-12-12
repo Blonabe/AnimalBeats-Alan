@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import OffcanvasMenu from './menu';
-import '../css/GestionRecordatorios.css';
+import '../css/gestionRecordatorios.css';
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import logo from "../assets/logo.png";
