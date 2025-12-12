@@ -1,3 +1,22 @@
+/* Estilos mínimos para gestionRecordatorios.jsx */
+.gestion-recordatorios-container {
+  padding: 1rem;
+}
+
+.gestion-recordatorios-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gestion-recordatorios-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.btn-accion {
+  margin-left: 0.5rem;
+}
 :root {
   --blanco: #FDF7FA;
   --rojo: #DF2935;
