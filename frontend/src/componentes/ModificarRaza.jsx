@@ -24,7 +24,7 @@ const ModificarRaza = () => {
         setNombreRaza(raza.raza || "");
         setDescripcion(raza.descripcion || "");
         setImagenActual(raza.imagen || null); // Aquí asumimos que el backend envía la propiedad imagen
-        const response = await axios.get(`/razas/${id_raza}`);
+      } catch (err) {
         setError("Error al cargar los datos de la raza");
         console.error(err);
       } finally {
@@ -61,12 +61,11 @@ const ModificarRaza = () => {
       };
 
       await axios.put(`/Razas/Actualizar/${id_raza}`, formData, config);
-
       Swal.fire({
         icon: "success",
         title: "Raza actualizada",
         text: "Los datos de la raza se actualizaron correctamente",
-      await axios.put(`/Razas/Actualizar/${id_raza}`, formData, config);
+      });
 
       navigate(`/razas/${id_especie}`);
     } catch (err) {
