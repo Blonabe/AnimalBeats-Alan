@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 
 // Conexión asincrónica a la base de datos AnimalBeats
 let conexion;
-const mysql = require('mysql2/promise'); // asegúrate de usar mysql2
 
 (async () => {
   try {
