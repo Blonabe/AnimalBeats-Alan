@@ -122,7 +122,7 @@ const ModificarRaza = () => {
               {imagenActual ? (
                 <div>
                   <img
-                    src={`${imagenActual}`}
+                    src={`/imagenes_razas/${imagenActual}`}
                     alt={nombreRaza}
                     style={{ maxWidth: '200px', display: 'block', marginBottom: '10px' }}
                   />
