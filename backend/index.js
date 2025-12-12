@@ -18,6 +18,8 @@ app.use(bodyParser.json());
 
 // Conexión asincrónica a la base de datos AnimalBeats
 let conexion;
+const mysql = require('mysql2/promise'); // asegúrate de usar mysql2
+
 (async () => {
   try {
     conexion = await mysql.createPool({
@@ -25,7 +27,7 @@ let conexion;
       user: process.env.DB_USER || "Alan",
       password: process.env.DB_PASS || 'Alan0921!',
       database: process.env.DB_NAME || "AnimalBeats",
-      port: process.env.DB_PORT || 3000,
+      port: process.env.DB_PORT || 3306, // << puerto correcto de MySQL
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0
@@ -37,6 +39,7 @@ let conexion;
     process.exit(1);
   }
 })();
+
 
 
 // Headers de la API
