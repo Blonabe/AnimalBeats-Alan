@@ -31,7 +31,6 @@ import EstadisticasAdmin from './componentes/EstadisticasAdmin';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import { UserContext } from './context/UserContext';
-import ErrorBoundary from './componentes/ErrorBoundary';
 
 function App() {
   // Inicializar el User desde localStorage
@@ -49,7 +48,6 @@ function App() {
   return (
     <>
       <UserContext.Provider value={{ User, setUser: handleSetUser }}>
-        <ErrorBoundary>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={!User ? (<Home />) : (
@@ -90,7 +88,6 @@ function App() {
             <Route path="/gestion_citas" element={!User ? <Navigate to="/" /> : <GestionCitas />} />
           </Routes>
         </BrowserRouter>
-        </ErrorBoundary>
       </UserContext.Provider>
     </>
   )
