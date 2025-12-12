@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/home.css";
 
-const BASE_URL = "https://animalbeats-api.onrender.com";
+const BASE_URL = ""; // use relative paths via proxy
 
 export default function IndexPage() {
   const navigate = useNavigate();

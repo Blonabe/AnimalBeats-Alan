@@ -18,13 +18,13 @@ const ModificarRaza = () => {
   useEffect(() => {
     const fetchRaza = async () => {
       try {
-        const response = await axios.get(`https://animalbeats-api.onrender.com/razas/${id_raza}`);
+        const response = await axios.get(`/razas/${id_raza}`);
         const raza = response.data;
 
         setNombreRaza(raza.raza || "");
         setDescripcion(raza.descripcion || "");
         setImagenActual(raza.imagen || null); // Aquí asumimos que el backend envía la propiedad imagen
-      } catch (err) {
+        const response = await axios.get(`/razas/${id_raza}`);
         setError("Error al cargar los datos de la raza");
         console.error(err);
       } finally {
@@ -60,13 +60,13 @@ const ModificarRaza = () => {
         },
       };
 
-      await axios.put(`https://animalbeats-api.onrender.com/Razas/Actualizar/${id_raza}`, formData, config);
+      await axios.put(`/Razas/Actualizar/${id_raza}`, formData, config);
 
       Swal.fire({
         icon: "success",
         title: "Raza actualizada",
         text: "Los datos de la raza se actualizaron correctamente",
-      });
+      await axios.put(`/Razas/Actualizar/${id_raza}`, formData, config);
 
       navigate(`/razas/${id_especie}`);
     } catch (err) {

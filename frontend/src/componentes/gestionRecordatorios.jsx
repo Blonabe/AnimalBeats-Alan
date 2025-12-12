@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import OffcanvasMenu from './menu';
-import '../css/GestionRecordatorios.css';
+import '../css/gestionRecordatorios.css';
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import logo from "../assets/logo.png";
@@ -38,7 +38,7 @@ function GestionRecordatorios() {
   // Obtener recordatorios
   const fetchRecordatorios = async () => {
     try {
-      const res = await axios.get('https://animalbeats-api.onrender.com/recordatorios');
+      const res = await axios.get('/recordatorios');
       setRecordatorio(res.data);
     } catch (error) {
       console.error('Error al obtener recordatorios:', error);
@@ -56,7 +56,7 @@ function GestionRecordatorios() {
     }
 
     try {
-      const res = await axios.get(`https://animalbeats-api.onrender.com/mascotas`);
+      const res = await axios.get(`/mascotas`);
       if (Array.isArray(res.data)) {
         // Filtrar solo las mascotas del cliente seleccionado
         const mascotasFiltradas = res.data.filter(m => m.id_cliente === clienteId);
@@ -95,10 +95,10 @@ function GestionRecordatorios() {
       const dataToSend = { ...form, fecha: form.fecha };
 
       if (modoEditar) {
-        await axios.put(`https://animalbeats-api.onrender.com/recordatorios/modificar/${idEditar}`, dataToSend);
+        await axios.put(`/recordatorios/modificar/${idEditar}`, dataToSend);
         Swal.fire('Actualizado', 'El recordatorio ha sido actualizado correctamente.', 'success');
       } else {
-        await axios.post('https://animalbeats-api.onrender.com/recordatorios/guardar', dataToSend);
+        await axios.post('/recordatorios/guardar', dataToSend);
         Swal.fire('Guardado', 'El recordatorio ha sido guardado correctamente.', 'success');
       }
 
@@ -124,7 +124,7 @@ function GestionRecordatorios() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`https://animalbeats-api.onrender.com/recordatorios/eliminar/${id}`);
+          await axios.delete(`/recordatorios/eliminar/${id}`);
           fetchRecordatorios();
           Swal.fire('¡Eliminado!', 'El recordatorio ha sido eliminado.', 'success');
         } catch (error) {
@@ -148,7 +148,7 @@ function GestionRecordatorios() {
 
     if (r.id_cliente) {
       try {
-        const res = await axios.get(`https://animalbeats-api.onrender.com/mascotas`);
+        const res = await axios.get(`/mascotas`);
         if (Array.isArray(res.data)) {
           const mascotasFiltradas = res.data.filter(m => m.id_cliente === r.id_cliente);
           setMascotasCliente(mascotasFiltradas);

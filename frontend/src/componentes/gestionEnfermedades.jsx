@@ -9,7 +9,7 @@ function GestionEnfermedades() {
   const { User } = useContext(UserContext);
   const puedeEditar = User?.rol === 1 || User?.rol === 3;
 
-  const API = 'https://animalbeats-api.onrender.com/Enfermedades';
+  const API = '/Enfermedades';
 
   const [enfermedades, setEnfermedades] = useState([]);
   const [busqueda, setBusqueda] = useState('');

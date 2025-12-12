@@ -16,7 +16,7 @@ function ModificarEspecie() {
   useEffect(() => {
     const obtenerEspecie = async () => {
       try {
-        const respuesta = await axios.get(`https://animalbeats-api.onrender.com/Especies/${id}`);
+        const respuesta = await axios.get(`/Especies/${id}`);
         const datos = respuesta.data;
 
         setEspecie(datos.Especie || '');
@@ -46,7 +46,7 @@ function ModificarEspecie() {
 
     try {
       setLoading(true);
-      await axios.put(`https://animalbeats-api.onrender.com/Especies/Actualizar/${id}`, formData, {
+      await axios.put(`/Especies/Actualizar/${id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 

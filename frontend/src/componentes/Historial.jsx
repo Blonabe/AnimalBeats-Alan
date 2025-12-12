@@ -46,7 +46,7 @@ const Historial = () => {
   useEffect(() => {
     const fetchMascota = async () => {
       try {
-        const { data } = await axios.get(`https://animalbeats-api.onrender.com/Mascotas/${id}`);
+        const { data } = await axios.get(`/Mascotas/${id}`);
         if (data?.mensaje || typeof data === "string") {
           setMascotaInfo({});
           setErrorMascota(data.mensaje || data);
@@ -66,7 +66,7 @@ const Historial = () => {
   useEffect(() => {
     const fetchCitas = async () => {
       try {
-        const { data } = await axios.get(`https://animalbeats-api.onrender.com/Citas/mascota/${id}`);
+        const { data } = await axios.get(`/Citas/mascota/${id}`);
         if (Array.isArray(data)) {
           setCitasInfo(data);
           setErrorCita(data.length === 0 ? "No hay citas registradas para esta mascota" : null);
@@ -89,7 +89,7 @@ const Historial = () => {
   useEffect(() => {
     const fetchHistorial = async () => {
       try {
-        const { data } = await axios.get(`https://animalbeats-api.onrender.com/recordatorio/mascota/${id}`);
+        const { data } = await axios.get(`/recordatorio/mascota/${id}`);
         if (Array.isArray(data)) {
           setHistorialMedico(data);
           setErrorHistorial(data.length === 0 ? "No hay recordatorios registrados" : null);
@@ -129,7 +129,7 @@ const Historial = () => {
     const descripcionActualizada = `${descripcionAnterior}\n\n--- Procesos de la cita ---\n[${timestamp}] ${nuevaDescripcion}`;
 
     try {
-      await axios.put(`https://animalbeats-api.onrender.com/Citas/Actualizar/${citaSeleccionada.id}`, {
+      await axios.put(`/Citas/Actualizar/${citaSeleccionada.id}`, {
         ...citaSeleccionada,
         descripcion: descripcionActualizada,
         estado: "Completado",

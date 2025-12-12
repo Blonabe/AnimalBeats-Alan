@@ -33,7 +33,7 @@ const CrearMascota = () => {
     const obtenerEspecies = async () => {
       try {
         const respuesta = await axios.get(
-          "https://animalbeats-api.onrender.com/Especies/Listado"
+          "/Especies/Listado"
         );
         const datos = respuesta.data;
 
@@ -67,7 +67,7 @@ const CrearMascota = () => {
     const obtenerRazas = async () => {
       try {
         const respuesta = await axios.get(
-          `https://animalbeats-api.onrender.com/Razas/Listado/${idEspecieSeleccionada}`
+          `/Razas/Listado/${idEspecieSeleccionada}`
         );
         const datos = respuesta.data;
 
@@ -117,7 +117,7 @@ const CrearMascota = () => {
 
     try {
       await axios.post(
-        "https://animalbeats-api.onrender.com/Mascotas/Registro",
+        "/Mascotas/Registro",
         mascotaData
       );
 

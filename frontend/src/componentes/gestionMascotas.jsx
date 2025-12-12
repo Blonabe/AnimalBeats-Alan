@@ -18,7 +18,7 @@ export default function GestionMascotas() {
 
     const fetchMascotas = async () => {
       try {
-        const res = await fetch("https://animalbeats-api.onrender.com/mascotas");
+        const res = await fetch("/mascotas");
         if (!res.ok) throw new Error("Error al obtener mascotas");
 
         const data = await res.json();
@@ -59,7 +59,7 @@ export default function GestionMascotas() {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://animalbeats-api.onrender.com/Mascotas/Eliminar/${id}`, {
+        fetch(`/Mascotas/Eliminar/${id}`, {
           method: "PUT",
         })
           .then((response) => {

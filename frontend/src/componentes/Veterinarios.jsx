@@ -5,7 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import OffcanvasMenu from "./menu";
 
-const baseUrl = "https://animalbeats-api.onrender.com";
+const baseUrl = "";
 
 export default function Veterinarios() {
     const navigate = useNavigate();

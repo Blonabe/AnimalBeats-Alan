@@ -8,7 +8,7 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://animalbeats-api.onrender.com/admin/dashboard")
+    fetch('/admin/dashboard')
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Error del servidor: ${res.status}`);

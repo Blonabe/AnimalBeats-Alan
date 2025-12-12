@@ -25,7 +25,7 @@ function CrearEspecie() {
     }
 
     try {
-      await axios.post('https://animalbeats-api.onrender.com/Especies/Crear', formData, {
+      await axios.post('/Especies/Crear', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

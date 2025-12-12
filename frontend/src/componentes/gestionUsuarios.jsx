@@ -12,7 +12,7 @@ export default function GestionUsuarios() {
   const fetchUsuarios = async () => {
     try {
       const res = await fetch(
-        "https://animalbeats-api.onrender.com/usuario/Listado"
+        "/usuario/Listado"
       );
       if (!res.ok) throw new Error("Error al obtener usuarios");
 
@@ -57,8 +57,8 @@ export default function GestionUsuarios() {
 
       const endpoint =
         estadoActual === "Activo"
-          ? `https://animalbeats-api.onrender.com/usuario/Suspender/${id}`
-          : `https://animalbeats-api.onrender.com/usuario/Reactivar/${id}`;
+          ? `/usuario/Suspender/${id}`
+          : `/usuario/Reactivar/${id}`;
 
       fetch(endpoint, { method: "PUT" })
         .then((response) => {

@@ -16,7 +16,7 @@ const ModificarMascota = () => {
   useEffect(() => {
     const fetchMascota = async () => {
       try {
-        const response = await axios.get(`https://animalbeats-api.onrender.com/mascotas/${id}`);
+        const response = await axios.get(`/mascotas/${id}`);
         const mascota = response.data;
 
         // Normalizar datos
@@ -38,7 +38,7 @@ const ModificarMascota = () => {
 
     try {
       const res = await axios.put(
-        `https://animalbeats-api.onrender.com/Mascotas/Actualizar/${id}`,
+        `/Mascotas/Actualizar/${id}`,
         { nombre, estado },
         { validateStatus: () => true } // 🔹 permite manejar todos los status manualmente
       );

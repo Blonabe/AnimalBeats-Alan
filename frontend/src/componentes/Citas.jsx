@@ -24,7 +24,7 @@ const GestionCitasUnique = () => {
   const [pestañaActiva, setPestañaActiva] = useState("Pendiente");
   const [todasMascotas, setTodasMascotas] = useState([]); // Guardar todas las mascotas
 
-  const API_URL = "https://animalbeats-api.onrender.com";
+  const API_URL = ""; // use relative paths
   const { User } = useContext(UserContext);
 
   const documentoUsuario =

@@ -38,7 +38,7 @@ export default function AgregarPV() {
             }
 
             const res = await axios.post(
-                "https://animalbeats-api.onrender.com/veterinarios/crear",
+                "/veterinarios/crear",
                 data,
                 { headers: { "Content-Type": "multipart/form-data" } }
             );

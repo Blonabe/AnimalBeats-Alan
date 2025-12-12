@@ -13,7 +13,7 @@ function ConsultarU() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`https://animalbeats-api.onrender.com/usuario/${n_documento}`)
+    fetch(`/usuario/${n_documento}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && data.n_documento) {
@@ -91,7 +91,7 @@ function ConsultarU() {
     }).then((result) => {
       if (result.isConfirmed) {
         fetch(
-          `https://animalbeats-api.onrender.com/usuario/Pendiente/${usuario.n_documento}`,
+          `/usuario/Pendiente/${usuario.n_documento}`,
           { method: "PUT" }
         )
           .then((res) => res.json())

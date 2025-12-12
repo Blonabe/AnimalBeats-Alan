@@ -10,3 +10,5 @@ INSERT INTO Servicios (servicio) VALUES
     ('Vacunaciones'), 
     ('Cardiologia'), 
     ('Nutricional');
+
+    

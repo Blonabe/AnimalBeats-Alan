@@ -23,7 +23,7 @@ const ModificarUsuario = ({ usuario }) => {
     const fetchTiposDocumento = async () => {
       try {
         const response = await fetch(
-          "https://animalbeats-api.onrender.com/tiposDocumento"
+          "/tiposDocumento"
         );
         const data = await response.json();
         setTiposDocumento(data);
@@ -39,7 +39,7 @@ const ModificarUsuario = ({ usuario }) => {
     const fetchRoles = async () => {
       try {
         const response = await fetch(
-          "https://animalbeats-api.onrender.com/roles/Listado"
+          "/roles/Listado"
         );
         const data = await response.json();
         if (data && data.roles) {
@@ -69,7 +69,7 @@ const ModificarUsuario = ({ usuario }) => {
 
     try {
       const response = await fetch(
-        `https://animalbeats-api.onrender.com/usuario/Actualizar/${nDocumento}`,
+        `/usuario/Actualizar/${nDocumento}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

@@ -9,7 +9,7 @@ export default function EstadisticasAdmin() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const apiUrl = "https://animalbeats-api.onrender.com";
+    const apiUrl = ""; // backend proxied via Vite/Nginx
     const navigate = useNavigate();
 
     useEffect(() => {

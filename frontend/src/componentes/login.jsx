@@ -14,7 +14,7 @@ const Login = ({ setUser }) => {
     setMensaje("");
 
     try {
-      const response = await axios.post("https://animalbeats-api.onrender.com/login", {
+      const response = await axios.post('/login', {
         correoelectronico,
         contrasena
       });
