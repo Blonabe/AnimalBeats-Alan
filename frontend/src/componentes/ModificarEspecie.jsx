@@ -91,7 +91,7 @@ function ModificarEspecie() {
               {imagenActual ? (
                 <div>
                   <img
-                    src={`${imagenActual}`}
+                    src={`/imagenes_especies/${imagenActual}`}
                     alt={especie}
                     style={{ maxWidth: '200px', display: 'block', marginBottom: '10px' }}
                   />
