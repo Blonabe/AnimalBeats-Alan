@@ -20,6 +20,9 @@ const Login = ({ setUser }) => {
       });
 
       const data = response.data;
+      console.log("Response completa del login:", data);
+      console.log("Tipo de rol:", typeof data.usuario.rol, "Valor:", data.usuario.rol);
+      
       const usuario = {
         rol: data.usuario.rol,
         n_documento: data.usuario.n_documento,
@@ -35,13 +38,14 @@ const Login = ({ setUser }) => {
 
       // Guardar token y datos importantes
       localStorage.setItem("token", data.token);
-      localStorage.setItem("rol", data.usuario.rol);
+      localStorage.setItem("rol", String(data.usuario.rol));
       localStorage.setItem("n_documento", data.usuario.n_documento);
 
       setMensaje(data.mensaje || "Inicio de sesión exitoso");
 
       setTimeout(() => {
-        console.log("Rol recibido:", data.usuario.rol);
+        console.log("Rol guardado en localStorage:", localStorage.getItem("rol"));
+        console.log("Usuario en localStorage:", localStorage.getItem("user"));
         console.log("Documento recibido:", data.usuario.n_documento);
 
         if (data.usuario.rol === 1) {
@@ -118,3 +122,4 @@ const Login = ({ setUser }) => {
 };
 
 export default Login;
+
