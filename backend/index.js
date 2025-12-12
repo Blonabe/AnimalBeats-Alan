@@ -111,20 +111,30 @@ app.get('/tiposDocumento', async (req, res) => {
 // Login
 app.post('/login', async (req, res) => {
   const { correoelectronico, contrasena } = req.body;
+  console.log('[LOGIN] Intento de login con correo:', correoelectronico);
 
   try {
+    console.log('[LOGIN] Buscando usuario en BD...');
     const [resultados] = await conexion.execute(
       'SELECT * FROM Usuarios WHERE correoelectronico = ?',
       [correoelectronico]
     );
+    console.log('[LOGIN] Resultados de búsqueda:', resultados.length, 'usuario(s) encontrado(s)');
 
     if (resultados.length === 0) {
+      console.log('[LOGIN] Usuario no encontrado');
       return res.status(404).json({ mensaje: 'Usuario no encontrado' });
     }
 
     const usuario = resultados[0];
+    console.log('[LOGIN] Usuario encontrado:', { n_documento: usuario.n_documento, nombre: usuario.nombre });
+    console.log('[LOGIN] Comparando contraseña con bcrypt...');
+    
     const esCorrecta = await bcrypt.compare(contrasena, usuario.contrasena);
+    console.log('[LOGIN] Contraseña correcta:', esCorrecta);
+    
     if (!esCorrecta) {
+      console.log('[LOGIN] Contraseña incorrecta');
       return res.status(401).json({ mensaje: 'Contraseña incorrecta' });
     }
 
@@ -135,14 +145,18 @@ app.post('/login', async (req, res) => {
       case 3: rolTexto = 'veterinario'; break;
       default: rolTexto = 'desconocido';
     }
+    console.log('[LOGIN] Rol asignado:', rolTexto, '(id_rol:', usuario.id_rol, ')');
 
     const payload = {
       n_documento: usuario.n_documento,
       nombre: usuario.nombre,
       rol: usuario.id_rol
     };
+    console.log('[LOGIN] Payload JWT creado:', payload);
 
+    console.log('[LOGIN] JWT_SECRET disponible:', !!JWT_SECRET);
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+    console.log('[LOGIN] Token generado exitosamente');
 
     res.json({
       mensaje: 'Inicio de sesión exitoso',
@@ -155,9 +169,11 @@ app.post('/login', async (req, res) => {
       rol: rolTexto,
       token
     });
+    console.log('[LOGIN] Respuesta enviada exitosamente');
 
   } catch (err) {
-    console.error("Error en login:", err);
+    console.error("[LOGIN] ERROR CAPTURADO:", err.message);
+    console.error("[LOGIN] Stack:", err.stack);
     res.status(500).json({ mensaje: 'Error interno al iniciar sesión' });
   }
 });
