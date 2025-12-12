@@ -31,6 +31,7 @@ import EstadisticasAdmin from './componentes/EstadisticasAdmin';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import { UserContext } from './context/UserContext';
+import ErrorBoundary from './componentes/ErrorBoundary';
 
 function App() {
   // Inicializar el User desde localStorage
@@ -48,27 +49,28 @@ function App() {
   return (
     <>
       <UserContext.Provider value={{ User, setUser: handleSetUser }}>
+        <ErrorBoundary>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={!User ? (<Home />) : (
-              User.rol === '1' ? <Navigate to="/admin" /> :
-                User.rol === '2' ? <Navigate to="/cliente" /> :
-                  User.rol === '3' ? <Navigate to="/veterinario" /> :
+              User.rol === 1 ? <Navigate to="/admin" /> :
+                User.rol === 2 ? <Navigate to="/cliente" /> :
+                  User.rol === 3 ? <Navigate to="/veterinario" /> :
                     <Navigate to="/" />
             )} />
             <Route path="/login" element={<Login setUser={handleSetUser} />} />
             <Route path='/registro' element={<Register setUser={handleSetUser} />} />
-            <Route path='/admin' element={User?.rol == 1 ? <Admin /> : <Navigate to="/" />} />
-            <Route path='/estadisticasadmin' element={User?.rol == 1 ? <EstadisticasAdmin /> : <Navigate to="/" />} />
+            <Route path='/admin' element={User?.rol === 1 ? <Admin /> : <Navigate to="/" />} />
+            <Route path='/estadisticasadmin' element={User?.rol === 1 ? <EstadisticasAdmin /> : <Navigate to="/" />} />
             <Route path="/cliente" element={User?.rol === 2 ? <Cliente /> : <Navigate to="/" />} />
             <Route path="/veterinario" element={User?.rol === 3 ? <Veterinario /> : <Navigate to="/" />} />
-            <Route path="/gestionusuarios" element={User?.rol == 1 ? <GestionUsuarios /> : <Navigate to="/" />} />
-            <Route path="/usuarios/:n_documento/consultar" element={User?.rol == 1 ? <ConsultarU /> : <Navigate to="/" />} />
+            <Route path="/gestionusuarios" element={User?.rol === 1 ? <GestionUsuarios /> : <Navigate to="/" />} />
+            <Route path="/usuarios/:n_documento/consultar" element={User?.rol === 1 ? <ConsultarU /> : <Navigate to="/" />} />
             <Route path="/usuarios/crear" element={User?.rol === 1 ? <CrearUsuario /> : <Navigate to="/" />} />
             <Route path="/usuario/Actualizar/:n_documento" element={User?.rol === 1 ? <ModificarUsuarioPage /> : <Navigate to="/" />} />
             <Route path="/estados-roles" element={User?.rol === 1 ? <EstadoRoles /> : <Navigate to="/" />} />
-            <Route path="/veterinarios" element={User?.rol == 1 || User?.rol == 3 ? <Veterinarios /> : <Navigate to="/" />} />
-            <Route path="/agregarpv" element={User?.rol == 1 || User?.rol == 3 ? <AgregarPV /> : <Navigate to="/" />} />
+            <Route path="/veterinarios" element={User?.rol === 1 || User?.rol === 3 ? <Veterinarios /> : <Navigate to="/" />} />
+            <Route path="/agregarpv" element={User?.rol === 1 || User?.rol === 3 ? <AgregarPV /> : <Navigate to="/" />} />
 
             {/* Rutas recordatorios */}
             <Route path="/recordatorios" element={User?.rol !== 2 ? <Recordatorios /> : <Navigate to="/" />} />
@@ -88,6 +90,7 @@ function App() {
             <Route path="/gestion_citas" element={!User ? <Navigate to="/" /> : <GestionCitas />} />
           </Routes>
         </BrowserRouter>
+        </ErrorBoundary>
       </UserContext.Provider>
     </>
   )
