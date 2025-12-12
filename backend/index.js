@@ -27,7 +27,7 @@ let conexion;
     conexion = await mysql.createPool({
       host: process.env.DB_HOST || "localhost",
       user: process.env.DB_USER || "Alan",
-      password: process.env.DB_PASS || 'Alan0921!',
+      password: process.env.DB_PASS || '0921',
       database: process.env.DB_NAME || "AnimalBeats",
       port: process.env.DB_PORT || 3306,
       waitForConnections: true,
@@ -933,23 +933,24 @@ app.get('/Citas/Listado', async (req, res) => {
         C.id_cliente,
         UC.nombre AS nombre_cliente,
         C.id_Servicio,
-        S.nombre AS nombre_servicio,
+        S.servicio AS nombre_servicio,
         C.id_veterinario,
         UV.nombre AS nombre_veterinario,
         C.fecha,
-        C.Descripcion
+        C.Descripcion,
+        C.estado
       FROM Citas C
-      INNER JOIN Mascota M ON C.id_Mascota = M.id
-      INNER JOIN Usuarios UC ON C.id_cliente = UC.n_documento
-      INNER JOIN Servicios S ON C.id_Servicio = S.id
-      INNER JOIN Usuarios UV ON C.id_veterinario = UV.n_documento
+      LEFT JOIN Mascota M ON C.id_Mascota = M.id
+      LEFT JOIN Usuarios UC ON C.id_cliente = UC.n_documento
+      LEFT JOIN Servicios S ON C.id_Servicio = S.id
+      LEFT JOIN Usuarios UV ON C.id_veterinario = UV.n_documento
       ORDER BY C.fecha DESC
     `);
 
-    if (resultado.length > 0) {
+    if (resultado && Array.isArray(resultado) && resultado.length > 0) {
       res.json(resultado);
     } else {
-      res.json({ mensaje: 'No hay citas registradas' });
+      res.json([]); // Retorna array vacío en lugar de objeto con mensaje
     }
   } catch (error) {
     console.error('Error al obtener citas:', error);
@@ -1057,15 +1058,15 @@ app.delete('/Citas/Eliminar/:id', async (req, res) => {
 * ======================== */
 app.get('/servicios/Listado', async (req, res) => {
   try {
-    const [resultado] = await conexion.execute('SELECT * FROM servicios');
-    if (resultado.length > 0) {
+    const [resultado] = await conexion.execute('SELECT * FROM Servicios');
+    if (resultado && Array.isArray(resultado) && resultado.length > 0) {
       res.json(resultado);
     } else {
-      res.json({ mensaje: 'No hay citas registradas' });
+      res.json([]); // Retorna array vacío en lugar de objeto con mensaje
     }
   } catch (error) {
-    console.error('Error al obtener citas:', error);
-    res.status(500).json({ error: 'Error al obtener citas' });
+    console.error('Error al obtener servicios:', error);
+    res.status(500).json({ error: 'Error al obtener servicios' });
   }
 });
 
