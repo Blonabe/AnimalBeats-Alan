@@ -13,14 +13,26 @@ const Register = () => {
         nombre: '',
         correoelectronico: '',
         contrasena: '',
-        confirmarContrasena: '' // ✅ Nuevo campo
+        confirmarContrasena: '' 
     });
     const [mensaje, setMensaje] = useState('');
 
     useEffect(() => {
         axios.get('/tiposDocumento')
-            .then(res => setTiposDocumento(res.data))
-            .catch(err => console.error('Error al obtener tipos de documento:', err));
+            .then(res => {
+                // Asegurar que recibimos un array antes de asignar
+                const datos = res.data;
+                if (Array.isArray(datos)) {
+                    setTiposDocumento(datos);
+                } else {
+                    console.warn('Respuesta /tiposDocumento no es un array:', datos);
+                    setTiposDocumento([]);
+                }
+            })
+            .catch(err => {
+                console.error('Error al obtener tipos de documento:', err);
+                setTiposDocumento([]);
+            });
     }, []);
 
     const handleChange = (e) => {
@@ -77,7 +89,7 @@ const Register = () => {
                             required
                         >
                             <option value="">Selecciona un tipo</option>
-                            {tiposDocumento.map(doc => (
+                            {Array.isArray(tiposDocumento) && tiposDocumento.map(doc => (
                                 <option key={doc.id} value={doc.id}>{doc.tipo}</option>
                             ))}
                         </select>
