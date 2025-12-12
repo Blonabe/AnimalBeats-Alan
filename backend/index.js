@@ -16,8 +16,6 @@ if (!process.env.JWT_SECRET) {
   console.warn('JWT_SECRET no definido en variables de entorno. Se generó uno automático. Para producción, define JWT_SECRET en las variables de entorno.');
 }
 
-
-
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -371,25 +369,39 @@ app.get('/cliente/dashboard/:n_documento', async (req, res) => {
     }
 
     //Obtener citas pendientes (fecha despues de hoy)
-    const [citasPendientes] = await conexion.execute(
-      `SELECT c.id_mascota, m.nombre AS nombre_mascota, s.servicio, c.fecha, c.descripcion
-       FROM Citas c
-       INNER JOIN Mascota m ON c.id_mascota = m.id
-       INNER JOIN Servicios s ON c.id_servicio = s.id
-       WHERE c.id_cliente = ? AND c.fecha >= CURDATE()
-       ORDER BY c.fecha ASC`,
-      [n_documento]
-    );
+    let citasPendientes = [];
+    try {
+      const [citas] = await conexion.execute(
+        `SELECT c.id_mascota, m.nombre AS nombre_mascota, s.servicio, c.fecha, c.descripcion
+         FROM Citas c
+         INNER JOIN Mascota m ON c.id_mascota = m.id
+         INNER JOIN Servicios s ON c.id_servicio = s.id
+         WHERE c.id_cliente = ? AND c.fecha >= CURDATE()
+         ORDER BY c.fecha ASC`,
+        [n_documento]
+      );
+      citasPendientes = citas || [];
+    } catch (err) {
+      console.warn("Advertencia al obtener citas:", err.message);
+      citasPendientes = [];
+    }
 
     // Obtener mascotas registradas
-    const [mascotas] = await conexion.execute(
-      `SELECT m.id, m.nombre, e.especie, r.raza, m.fecha_nacimiento, m.estado
-       FROM Mascota m
-       INNER JOIN Especie e ON m.id_especie = e.id
-       INNER JOIN Raza r ON m.id_raza = r.id
-       WHERE m.id_cliente = ?`,
-      [n_documento]
-    );
+    let mascotas = [];
+    try {
+      const [mascotasResult] = await conexion.execute(
+        `SELECT m.id, m.nombre, e.especie, r.raza, m.fecha_nacimiento, m.estado
+         FROM Mascota m
+         LEFT JOIN Especie e ON m.id_especie = e.id
+         LEFT JOIN Raza r ON m.id_raza = r.id
+         WHERE m.id_cliente = ?`,
+        [n_documento]
+      );
+      mascotas = mascotasResult || [];
+    } catch (err) {
+      console.warn("Advertencia al obtener mascotas:", err.message);
+      mascotas = [];
+    }
 
     // Respuesta
     res.json({
