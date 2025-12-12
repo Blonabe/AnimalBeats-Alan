@@ -210,11 +210,16 @@ const GestionCitasUnique = () => {
         <p>Administra y controla todas las citas de manera sencilla</p>
       </div>
 
+      {/* FORMULARIO SIEMPRE VISIBLE */}
       <form className="citas-form">
         {rolActual !== 2 && (
           <div className="citas-form-group">
             <label>Tutor</label>
-            <select value={nuevaCita.id_cliente} onChange={handleClienteChange}>
+            <select 
+              value={nuevaCita.id_cliente} 
+              onChange={handleClienteChange}
+              disabled={!rolActual || rolActual === 2}
+            >
               <option value="">Seleccione un cliente</option>
               {clientes.map((c) => (
                 <option key={c.n_documento} value={c.n_documento}>{c.nombre}</option>
@@ -225,7 +230,11 @@ const GestionCitasUnique = () => {
 
         <div className="citas-form-group">
           <label>Mascota</label>
-          <select value={nuevaCita.id_mascota} onChange={(e) => setNuevaCita({ ...nuevaCita, id_mascota: e.target.value })}>
+          <select 
+            value={nuevaCita.id_mascota} 
+            onChange={(e) => setNuevaCita({ ...nuevaCita, id_mascota: e.target.value })}
+            required
+          >
             <option value="">Seleccione una mascota</option>
             {mascotas.map((m) => (
               <option key={m.id} value={m.id}>{m.nombre}</option>
@@ -235,7 +244,11 @@ const GestionCitasUnique = () => {
 
         <div className="citas-form-group">
           <label>Servicio</label>
-          <select value={nuevaCita.id_servicio} onChange={(e) => setNuevaCita({ ...nuevaCita, id_servicio: e.target.value })}>
+          <select 
+            value={nuevaCita.id_servicio} 
+            onChange={(e) => setNuevaCita({ ...nuevaCita, id_servicio: e.target.value })}
+            required
+          >
             <option value="">Seleccione un servicio</option>
             {servicios.map((s) => (
               <option key={s.id} value={s.id}>{s.servicio}</option>
@@ -245,7 +258,11 @@ const GestionCitasUnique = () => {
 
         <div className="citas-form-group">
           <label>Veterinario</label>
-          <select value={nuevaCita.id_veterinario} onChange={(e) => setNuevaCita({ ...nuevaCita, id_veterinario: e.target.value })}>
+          <select 
+            value={nuevaCita.id_veterinario} 
+            onChange={(e) => setNuevaCita({ ...nuevaCita, id_veterinario: e.target.value })}
+            required
+          >
             <option value="">Seleccione un veterinario</option>
             {veterinarios.map((v) => (
               <option key={v.id} value={v.id}>{v.nombre_completo}</option>
