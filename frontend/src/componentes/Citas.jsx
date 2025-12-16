@@ -94,8 +94,8 @@ const GestionCitasUnique = () => {
 
   const fetchVeterinarios = async () => {
     try {
-      const res = await axios.get(`${API_URL}/veterinarios`);
-      setVeterinarios(res.data || []);
+      const res = await axios.get(`${API_URL}/usuario/Listado`);
+      setVeterinarios((res.data.usuarios || []).filter((v) => v.id_rol === 3));
     } catch {
       setVeterinarios([]);
     }
