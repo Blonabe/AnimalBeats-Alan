@@ -27,7 +27,7 @@ let conexion;
     conexion = await mysql.createPool({
       host: process.env.DB_HOST || "localhost",
       user: process.env.DB_USER || "Alan",
-      password: process.env.DB_PASS || '0921',
+      password: process.env.DB_PASS || 'Alan0921',
       database: process.env.DB_NAME || "AnimalBeats",
       port: process.env.DB_PORT || 3306,
       waitForConnections: true,
